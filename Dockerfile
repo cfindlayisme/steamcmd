@@ -15,3 +15,5 @@ RUN \
     cd /steam && \
     tar -xvzf steamcmd_linux.tar.gz && \
     rm /steam/steamcmd_linux.tar.gz
+
+CMD /steam/steamcmd.sh
