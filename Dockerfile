@@ -3,7 +3,7 @@
 # Author: Chuck Findlay <chuck@findlayis.me>
 # License: LGPL v3.0
 
-FROM debian:buster-slim
+FROM debian:bullseye-slim
 
 RUN \
     apt update && \
