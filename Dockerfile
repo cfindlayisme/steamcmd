@@ -5,7 +5,7 @@
 
 FROM debian:bookworm-slim AS builder
 
-ADD http://media.steampowered.com/client/steamcmd_linux.tar.gz /steam/steamcmd_linux.tar.gz
+ADD https://media.steampowered.com/client/steamcmd_linux.tar.gz /steam/steamcmd_linux.tar.gz
 
 RUN \
     cd /steam && \
