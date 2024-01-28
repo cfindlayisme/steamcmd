@@ -2,6 +2,8 @@
 # 
 # Author: Chuck Findlay <chuck@findlayis.me>
 # License: LGPL v3.0
+#
+# CI/CD build Jan-28-2024
 
 FROM debian:bookworm-slim AS builder
 
