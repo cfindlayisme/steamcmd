@@ -5,7 +5,7 @@
 #
 # CI/CD build Feb-10-2024
 
-FROM debian:bookworm-slim AS builder
+FROM debian:12.5-slim AS builder
 
 ADD https://media.steampowered.com/client/steamcmd_linux.tar.gz /steam/steamcmd_linux.tar.gz
 
@@ -14,7 +14,7 @@ RUN \
     tar -xvzf steamcmd_linux.tar.gz && \
     rm /steam/steamcmd_linux.tar.gz
 
-FROM debian:bookworm-slim
+FROM debian:12.5-slim
 
 # Some dependencies required for steamcmd to work
 RUN \
