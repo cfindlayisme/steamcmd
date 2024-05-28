@@ -34,14 +34,19 @@ jobs:
         run: |
             sed -i "s#apt-get install -y .* &&#apt-get install -y ${{ steps.check-updates.outputs.packages }} &&#" Dockerfile
 
+      - name: Install Git
+        run: |
+            apt-get update
+            apt-get install -y git
+
       - name: Commit and push if Dockerfile was updated
         run: |
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
-          git add Dockerfile
-          git commit -m "Update Dockerfile packages"
-          git push origin HEAD:refs/heads/update-dockerfile-packages
-
+            git config --global user.email "github-actions[bot]@users.noreply.github.com"
+            git config --global user.name "github-actions[bot]"
+            git add Dockerfile
+            git commit -m "Update Dockerfile packages"
+            git push origin HEAD:refs/heads/update-dockerfile-packages
+            
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
