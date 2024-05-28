@@ -19,7 +19,7 @@ jobs:
       - name: Check for package updates
         id: check-updates
         run: |
-          sudo apt-get update
+          apt-get update
           PACKAGES=$(grep -oP '(?<=apt-get install -y ).*?(?= &&)' Dockerfile)
           UPDATED_PACKAGES=""
           for PACKAGE in $PACKAGES; do
