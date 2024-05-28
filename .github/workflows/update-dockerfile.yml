@@ -19,9 +19,9 @@ jobs:
           docker run --rm -v $(pwd):/workdir -w /workdir debian:12.5-slim bash -c "
             apt-get update &&
             apt-get install -y curl jq &&
-            PACKAGES=$(grep -oP '(?<=apt-get install -y ).*?(?= &&)' Dockerfile) &&
+            IFS=' ' read -r -a PACKAGES <<< \"$(grep -oP '(?<=apt-get install -y ).*?(?= &&)' Dockerfile)\" &&
             UPDATED_PACKAGES='' &&
-            for PACKAGE in $PACKAGES; do
+            for PACKAGE in \"${PACKAGES[@]}\"; do
               PACKAGE_NAME=$(echo $PACKAGE | cut -d= -f1) &&
               LATEST_VERSION=$(apt-cache madison $PACKAGE_NAME | head -1 | awk '{print $3}') &&
               UPDATED_PACKAGES=\"$UPDATED_PACKAGES $PACKAGE_NAME=$LATEST_VERSION\"
