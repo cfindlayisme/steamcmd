@@ -26,14 +26,13 @@ jobs:
               LATEST_VERSION=$(apt-cache madison $PACKAGE_NAME | head -1 | awk '{print $3}') &&
               UPDATED_PACKAGES=\"$UPDATED_PACKAGES $PACKAGE_NAME=$LATEST_VERSION\"
             done &&
-            echo \"::set-output name=packages::apt-get install -y $UPDATED_PACKAGES &&\"
+            echo \"::set-output name=packages::$UPDATED_PACKAGES\"
           "
-
       - name: Update Dockerfile
         id: update
         run: |
             UPDATED_PACKAGES="${{ steps.check-updates.outputs.packages }}"
-            sed -i "s#apt-get install -y .* &&#$UPDATED_PACKAGES#" Dockerfile
+            sed -i "s#apt-get install -y .* &&#apt-get install -y $UPDATED_PACKAGES &&#" Dockerfile
 
       - name: Commit and push if Dockerfile was updated
         run: |
