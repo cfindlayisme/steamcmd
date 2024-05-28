@@ -32,7 +32,8 @@ jobs:
       - name: Update Dockerfile
         id: update
         run: |
-          sed -i "s#apt-get install -y .* &&#apt-get install -y ${{ steps.check-updates.outputs.packages }} &&#" Dockerfile
+            UPDATED_PACKAGES="${{ steps.check-updates.outputs.packages }}"
+            sed -i "s#apt-get install -y .* &&#apt-get install -y $UPDATED_PACKAGES &&#" Dockerfile
 
       - name: Commit and push if Dockerfile was updated
         run: |
