@@ -1,0 +1,51 @@
+name: Update Dockerfile Packages
+
+on:
+  schedule:
+    - cron: '0 0 * * 0'  # This will run the workflow every Sunday at 
+  workflow_dispatch:  # This allows the workflow to be manually triggered
+
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    container:
+        image: debian:12.5-slim
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check for package updates
+        id: check-updates
+        run: |
+          sudo apt-get update
+          PACKAGES=$(grep -oP '(?<=apt-get install -y ).*?(?= &&)' Dockerfile)
+          UPDATED_PACKAGES=""
+          for PACKAGE in $PACKAGES; do
+            PACKAGE_NAME=$(echo $PACKAGE | cut -d= -f1)
+            LATEST_VERSION=$(apt-cache madison $PACKAGE_NAME | head -1 | awk '{print $3}')
+            UPDATED_PACKAGES="$UPDATED_PACKAGES $PACKAGE_NAME=$LATEST_VERSION"
+          done
+          echo "::set-output name=packages::$UPDATED_PACKAGES"
+
+      - name: Update Dockerfile
+        id: update
+        run: |
+          sed -i 's/apt-get install -y .*? &&/apt-get install -y '${{ steps.check-updates.outputs.packages }}' &&/' Dockerfile
+
+      - name: Commit and push if Dockerfile was updated
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git add Dockerfile
+          git commit -m "Update Dockerfile packages"
+          git push origin HEAD:refs/heads/update-dockerfile-packages
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          title: "Update Dockerfile packages"
+          branch: "update-dockerfile-packages"
+          base: "main"  # replace with your default branch if it's not "main"
+          body: "Automatically detected and updated packages in Dockerfile"
