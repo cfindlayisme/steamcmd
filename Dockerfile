@@ -2,8 +2,6 @@
 # 
 # Author: Chuck Findlay <chuck@findlayis.me>
 # License: LGPL v3.0
-#
-# CI/CD build Feb-10-2024
 
 FROM debian:12.5-slim AS builder
 
