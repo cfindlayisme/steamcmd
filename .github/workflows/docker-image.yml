@@ -53,7 +53,7 @@ jobs:
         secrets: |
             kv/data/pipeline/wmb WMB_URL ;
             kv/data/pipeline/wmb WMB_PASSWORD
-          exportEnv: true
+        exportEnv: true
     - name: Notify IRC on Success
       run: |
         export COMMIT_MSG=$(git log -1 --pretty=%B)
