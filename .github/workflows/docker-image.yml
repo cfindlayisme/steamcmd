@@ -59,7 +59,7 @@ jobs:
         docker push ghcr.io/${{ github.repository }}:latest
     - name: Retrieve wmb info from vault
       id: import-secrets-wmb
-      uses: hashicorp/vault-action@v3.0.0
+      uses: hashicorp/vault-action@v3.1.0
       with:
         url: ${{ secrets.VAULT_ADDR }}
         method: token
