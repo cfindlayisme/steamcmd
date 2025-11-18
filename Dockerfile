@@ -3,7 +3,7 @@
 # Author: Chuck Findlay <chuck@findlayis.me>
 # License: LGPL v3.0
 
-FROM debian:13.1-slim AS builder
+FROM debian:13.2-slim AS builder
 
 ADD https://media.steampowered.com/client/steamcmd_linux.tar.gz /steam/steamcmd_linux.tar.gz
 
@@ -12,7 +12,7 @@ RUN \
     tar -xvzf steamcmd_linux.tar.gz && \
     rm /steam/steamcmd_linux.tar.gz
 
-FROM debian:13.1-slim
+FROM debian:13.2-slim
 
 # Some dependencies required for steamcmd to work
 RUN \
